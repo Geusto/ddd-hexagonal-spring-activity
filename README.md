@@ -1,4 +1,4 @@
-# 🚕 CarreraTaxi - Arquitectura Hexagonal en Spring Boot
+# Arquitectura Hexagonal en Spring Boot
 
 ## 📋 Descripción
 
