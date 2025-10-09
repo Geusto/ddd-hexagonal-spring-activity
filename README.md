@@ -2,7 +2,7 @@
 
 ## 📋 Descripción
 
-Proyecto que implementa la gestión de carreras de taxi utilizando arquitectura hexagonal con Spring Boot y persistencia en memoria.
+Proyecto que implementa la gestión de dos agregados entidades utilizando arquitectura hexagonal con Spring Boot y persistencia en memoria.
 
 ## 🛠️ Requisitos del Sistema
 
@@ -28,17 +28,22 @@ java -version
 # Debe mostrar Java 21
 ```
 
-### 3. Ejecutar la aplicación
+### 3. Compilar el proyecto (OBLIGATORIO)
+```bash
+# Compilar y descargar dependencias
+./gradlew build
+```
+
+### 4. Ejecutar la aplicación
 ```bash
 # Opción 1: Usando Gradle Wrapper (recomendado)
 ./gradlew bootRun
 
-# Opción 2: Compilar y ejecutar
-./gradlew build
+# Opción 2: Ejecutar JAR compilado
 java -jar build/libs/ddd-hexagonal-spring-0.0.1-SNAPSHOT.jar
 ```
 
-### 4. Verificar que funciona
+### 5. Verificar que funciona
 ```bash
 # Salud de la aplicación
 curl http://localhost:8080/actuator/health
