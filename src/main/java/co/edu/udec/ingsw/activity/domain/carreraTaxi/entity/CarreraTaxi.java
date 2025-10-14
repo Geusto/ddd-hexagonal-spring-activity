@@ -15,7 +15,13 @@ import co.edu.udec.ingsw.activity.domain.carreraTaxi.valueobject.CarreraTaxiCant
 import co.edu.udec.ingsw.activity.domain.carreraTaxi.valueobject.CarreraTaxiPrecio;
 import co.edu.udec.ingsw.activity.domain.carreraTaxi.valueobject.CarreraTaxiDuracionMinutos;
 
+// Imports para eventos de dominio
+import co.edu.udec.ingsw.activity.domain.carreraTaxi.event.CarreraTaxiCreated;
+import co.edu.udec.ingsw.activity.domain.carreraTaxi.event.CarreraTaxiUpdated;
+import co.edu.udec.ingsw.activity.domain.carreraTaxi.event.CarreraTaxiDeleted;
+
 public class CarreraTaxi {
+  // Campos inmutables (final)
   private final CarreraTaxiId id;
   private final CarreraTaxiCliente cliente;
   private final CarreraTaxiTaxi taxi;
@@ -27,6 +33,7 @@ public class CarreraTaxi {
   private final CarreraTaxiDuracionMinutos duracionMinutos;
   private final LocalDateTime fechaCreacion;
 
+  // Campos mutables
   private CarreraTaxiPrecio precio;
     
   private final List<Object> domainEvents = new ArrayList<>();
@@ -49,7 +56,6 @@ public class CarreraTaxi {
 
   // Validaciones de negocio
   validateBusinessRules(id, cliente, taxi, taxista, kilometros, barrioInicio, barrioLlegada, cantidadPasajeros, precio, duracionMinutos);
-        
     this.id = id;
     this.cliente = cliente;
     this.taxi = taxi;
@@ -63,7 +69,12 @@ public class CarreraTaxi {
     this.fechaCreacion = LocalDateTime.now();
   
   // Publicar evento de dominio
-  addDomainEvent("CarreraTaxiCreated");
+  addDomainEvent(new CarreraTaxiCreated(
+    this.id, this.cliente, this.taxi, this.taxista, 
+    this.kilometros, this.precio, this.duracionMinutos, 
+    this.barrioInicio, this.barrioLlegada, this.cantidadPasajeros, 
+    this.fechaCreacion
+  ));
   }
   
   // Métodos de acceso (getters)
@@ -78,29 +89,33 @@ public class CarreraTaxi {
   public CarreraTaxiPrecio getPrecio() { return precio; }
   public CarreraTaxiDuracionMinutos getDuracionMinutos() { return duracionMinutos; }
   public LocalDateTime getFechaCreacion() { return fechaCreacion; }
-  
-  /**
-   * @param nuevoPrecio El nuevo precio de la carrera
-   */
+
   public void actualizarPrecio(CarreraTaxiPrecio nuevoPrecio) {
     if (nuevoPrecio == null) {
       throw new IllegalArgumentException("El nuevo precio no puede ser nulo");
     }
+    
+    // Guardar el precio anterior para el evento
+    CarreraTaxiPrecio precioAnterior = this.precio;
     this.precio = nuevoPrecio;
-    addDomainEvent("CarreraTaxiUpdated");
+    
+    // Publicar evento de dominio con información de la actualización
+    addDomainEvent(new CarreraTaxiUpdated(
+      this.id, precioAnterior, nuevoPrecio, LocalDateTime.now()
+    ));
   }
   
   /**
-   * Marcar la carrera para eliminación
+   * Método de negocio: Marcar la carrera para eliminación
    */
   public void marcarCarreraParaEliminar() {
-    addDomainEvent("CarreraTaxiDeleted");
+    addDomainEvent(new CarreraTaxiDeleted(
+      this.id, LocalDateTime.now()
+    ));
   }
   
   /**
    * Verificar si dos carreras son iguales
-   * @param other Otra carrera para comparar
-   * @return true si son iguales
    */
   public boolean equals(CarreraTaxi other) {
     return other != null && this.id.equals(other.getId());
@@ -108,7 +123,6 @@ public class CarreraTaxi {
   
   /**
    * Representación en cadena de la carrera
-   * @return String con los datos de la carrera
    */
   @Override
   public String toString() {
@@ -124,8 +138,8 @@ public class CarreraTaxi {
     domainEvents.clear();
   }
   
-  private void addDomainEvent(String eventType) {
-    domainEvents.add(eventType);
+  private void addDomainEvent(Object event) {
+    domainEvents.add(event);
   }
   
   // Métodos de validación privados
