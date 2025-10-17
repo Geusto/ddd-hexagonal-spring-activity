@@ -1,0 +1,31 @@
+{
+	"info": {
+		"_postman_id": "1d928d89-f11f-4767-9b13-19b029dcddb5",
+		"name": "CarreraTaxi Spring Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48756286",
+		"_collection_link": "https://elunat-9751042.postman.co/workspace/EUGENIO-Team's-Workspace~112de185-24c7-4e33-87f4-f37efd041856/collection/48756286-1d928d89-f11f-4767-9b13-19b029dcddb5?action=share&source=collection_link&creator=48756286"
+	},
+	"item": [
+		{
+			"name": "List all Carreras",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/carreras-taxi",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carreras-taxi"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
