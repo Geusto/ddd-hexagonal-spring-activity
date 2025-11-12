@@ -10,5 +10,6 @@ public interface UsuarioRepositoryPort {
   void update(Usuario usuario);
   void delete(UsuarioId id);
   Usuario findById(UsuarioId id);
+  Usuario findByNombre(String nombre);
   List<Usuario> findAll();
 }
