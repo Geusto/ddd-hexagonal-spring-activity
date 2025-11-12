@@ -42,6 +42,14 @@ public class InMemoryUsuarioRepositoryAdapter implements UsuarioRepositoryPort {
   }
 
   @Override
+  public Usuario findByNombre(String nombre) {
+    return storage.values().stream()
+      .filter(usuario -> usuario.getNombre().value().equals(nombre))
+      .findFirst()
+      .orElse(null);
+  }
+
+  @Override
   public List<Usuario> findAll() {
     return new ArrayList<>(storage.values());
   }
